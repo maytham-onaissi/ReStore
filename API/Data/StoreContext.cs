@@ -11,5 +11,6 @@ namespace API.Data
 
     // This basically creates a database of the type Product, which was made in ./Entities/Product
     public DbSet<Product> Products { get; set; }
+    public DbSet<Basket> Baskets { get; set; }
   }
 }

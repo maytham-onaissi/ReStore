@@ -5,17 +5,16 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Typography,
 } from "@mui/material";
-import { useStoreContext } from "../../App/context/StoreContext";
 import {
   basketSubTotal,
   basketTotalPrice,
   currencyFormat,
 } from "../../App/util/util";
+import { useAppSelector } from "../../App/store/configureStore";
 
 export default function BasketSummary() {
-  const { basket } = useStoreContext();
+  const { basket } = useAppSelector((state) => state.basket);
   const subtotal = basketSubTotal(basket!);
   const { totalPrice, deliveryFee } = basketTotalPrice(basket!);
 

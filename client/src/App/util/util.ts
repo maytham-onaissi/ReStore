@@ -1,4 +1,3 @@
-import { useStoreContext } from "../context/StoreContext";
 import { Basket } from "../models/basket";
 
 // gets the cookie from local storage.

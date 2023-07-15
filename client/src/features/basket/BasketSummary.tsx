@@ -13,10 +13,20 @@ import {
 } from "../../App/util/util";
 import { useAppSelector } from "../../App/store/configureStore";
 
-export default function BasketSummary() {
+interface props {
+  subtotal?: number;
+}
+
+export default function BasketSummary({ subtotal }: props) {
   const { basket } = useAppSelector((state) => state.basket);
-  const subtotal = basketSubTotal(basket!);
   const { totalPrice, deliveryFee } = basketTotalPrice(basket!);
+
+  if (subtotal === undefined)
+    subtotal =
+      basket?.items.reduce(
+        (sum, item) => sum + item.quantity * item.price,
+        0
+      ) ?? 0;
 
   return (
     <>

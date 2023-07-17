@@ -26,7 +26,6 @@ const Catalog = () => {
   const dispatch = useAppDispatch();
   const {
     productsLoaded,
-    status,
     filtersLoaded,
     brands,
     types,

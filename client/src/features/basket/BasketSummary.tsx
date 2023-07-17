@@ -6,20 +6,28 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
-import {
-  basketSubTotal,
-  basketTotalPrice,
-  currencyFormat,
-} from "../../App/util/util";
+import { basketTotalPrice, currencyFormat } from "../../App/util/util";
 import { useAppSelector } from "../../App/store/configureStore";
+import { useEffect, useState } from "react";
 
 interface props {
   subtotal?: number;
+  total?: number;
+  isBasket: boolean;
 }
 
-export default function BasketSummary({ subtotal }: props) {
+export default function BasketSummary({ subtotal, total, isBasket }: props) {
   const { basket } = useAppSelector((state) => state.basket);
   const { totalPrice, deliveryFee } = basketTotalPrice(basket!);
+  const [price, setPrice] = useState<number>(0);
+
+  useEffect(() => {
+    if (!isBasket) {
+      setPrice(total!);
+    } else {
+      setPrice(totalPrice);
+    }
+  }, [totalPrice, isBasket, total]);
 
   if (subtotal === undefined)
     subtotal =
@@ -43,7 +51,9 @@ export default function BasketSummary({ subtotal }: props) {
             </TableRow>
             <TableRow>
               <TableCell colSpan={2}>Total</TableCell>
-              <TableCell align="right">{currencyFormat(totalPrice)}</TableCell>
+              <TableCell align="right">
+                {currencyFormat(price + deliveryFee)}
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell>

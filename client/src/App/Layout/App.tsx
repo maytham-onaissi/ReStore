@@ -29,7 +29,7 @@ function App() {
 
   useEffect(() => {
     initApp().then(() => setLoading(false));
-  }, []);
+  }, [initApp]);
 
   // set theme mode
   // -----------------------------------------------

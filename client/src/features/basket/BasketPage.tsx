@@ -15,7 +15,7 @@ const BasketPage = () => {
       <Grid container>
         <Grid item xs={6} />
         <Grid item xs={6}>
-          <BasketSummary />
+          <BasketSummary isBasket={true} />
           <Button
             component={Link}
             to="/checkout"

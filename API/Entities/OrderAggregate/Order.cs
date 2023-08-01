@@ -8,7 +8,8 @@ namespace API.Entities.OrderAggregate
         public string BuyerId { get; set; }    
         [Required]    
         public ShippingAddress ShippingAddress { get; set; }
-        public DateTime OrderDate { get; set; } = DateTime.Now;
+        // postgres requires this form of datetime
+        public DateTime OrderDate { get; set; } = DateTime.UtcNow;
         public List<OrderItem> orderItems { get; set; }
         public long Subtotal { get; set; }
         public long DeliveryFee { get; set; }

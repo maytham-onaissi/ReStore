@@ -44,7 +44,7 @@ const Header = ({ themeHandler, darkMode }: props) => {
 
   return (
     // sx={mb: 4}, the 4 is multiplied by 8, which equals 32p.
-    <AppBar position="static" sx={{ mb: 4 }}>
+    <AppBar position="static">
       <Toolbar
         sx={{
           display: "flex",

@@ -45,10 +45,32 @@ builder.Services.AddSwaggerGen(c =>
 
 // This part basically enables the app to use the database from everywhere.
 // check appsettings.Development.json to understand more of it.
-builder.Services.AddDbContext<StoreContext>(opt => 
+string connString;
+if (builder.Environment.IsDevelopment())
+    connString = builder.Configuration.GetConnectionString("DefaultConnection");
+else
 {
-    opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+    // Use connection string provided at runtime by FlyIO.
+    var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+
+    // Parse connection URL to connection string for Npgsql
+    connUrl = connUrl.Replace("postgres://", string.Empty);
+    var pgUserPass = connUrl.Split("@")[0];
+    var pgHostPortDb = connUrl.Split("@")[1];
+    var pgHostPort = pgHostPortDb.Split("/")[0];
+    var pgDb = pgHostPortDb.Split("/")[1];
+    var pgUser = pgUserPass.Split(":")[0];
+    var pgPass = pgUserPass.Split(":")[1];
+    var pgHost = pgHostPort.Split(":")[0];
+    var pgPort = pgHostPort.Split(":")[1];
+
+    connString = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb};";
+}
+builder.Services.AddDbContext<StoreContext>(opt =>
+{
+    opt.UseNpgsql(connString);
 });
+
 
 builder.Services.AddCors();
 
@@ -93,6 +115,9 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+//looks at the default directory for index.html in the wwwroot file.
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.UseCors(opt => 
 {
 // allow all headers     allow any mehtod   allow cookies    allow specific urls to excute the methods   
@@ -103,6 +128,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+// this basically tells the api what to do with unknown routes.
+// check FallbackController.cs
+app.MapFallbackToController("Index", "Fallback");
 
 // This basically creates a database via code. instead of the dotnet CLI.
 var scope = app.Services.CreateScope();

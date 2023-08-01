@@ -1,5 +1,4 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
-import HomePage from "../../features/home/HomePage";
 import App from "../Layout/App";
 import Catalog from "../../features/Catalog/Catalog";
 import ProductDetails from "../../features/Catalog/ProductDetails";
@@ -26,7 +25,6 @@ export const router = createBrowserRouter([
           { path: "orders", element: <Orders /> },
         ],
       },
-      { index: true, element: <HomePage /> },
       { path: "catalog", element: <Catalog /> },
       { path: "catalog/:id", element: <ProductDetails /> },
       { path: "about", element: <AboutPage /> },
